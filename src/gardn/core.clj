@@ -25,9 +25,7 @@
         new-value (f value)]
     (Data. id (Id. reference (.hashCode new-value)) new-value)))
 
-(def nacho (new-entity "Nacho" "Hola "))
 
-(update-entity nacho #(.trim %))
 (defprotocol Store
   (get-entity
    "Retrieves a given entity by it's Id. 

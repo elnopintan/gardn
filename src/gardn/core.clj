@@ -24,7 +24,7 @@
         {:keys [reference instance]} id
         new-value (f value)]
     (Data. id (Id. reference 
-                   {:seq (inc (:seqinstance=)) 
+                   {:seq (inc (:seq instance)) 
                     :hash (.hashCode new-value)}) 
            new-value)))
 

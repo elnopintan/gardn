@@ -14,7 +14,7 @@
 (defn new-entity 
   "Creates a new entity with a given reference and value"
   [reference value]
-  (Data. nil (Id. reference (.hashCode value)) value))
+  (Data. nil (Id. reference 0) value))
 
 
 (defn update-entity 
@@ -23,15 +23,14 @@
   (let [{:keys [id value]} origin
         {:keys [reference instance]} id
         new-value (f value)]
-    (Data. id (Id. reference (.hashCode new-value)) new-value)))
+    (Data. id (Id. reference (inc instance)) new-value)))
 
 
 (defprotocol Store
-  (get-entity
-   "Retrieves a given entity by it's Id. 
-   If instance is :last retrieva the last entity"
-   [id])
-  (persist! 
+  (get-entity [this id]
+      "Retrieves a given entity by it's Id. 
+   If instance is :last retrieva the last entity")
+  (persist! [this entity]
    "Persists a given gardn entity. Returns true if it's persisted and false 
-   if there is already an entity with the same origin."
-   [entity]))
+   if there is already an entity with the same origin."))
+

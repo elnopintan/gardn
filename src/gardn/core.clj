@@ -14,7 +14,7 @@
 (defn new-entity 
   "Creates a new entity with a given reference and value"
   [reference value]
-  (Data. nil (Id. reference 0) value))
+  (Data. nil (Id. reference {:seq 0 :hash (.hashCode value)}) value))
 
 
 (defn update-entity 
@@ -23,7 +23,10 @@
   (let [{:keys [id value]} origin
         {:keys [reference instance]} id
         new-value (f value)]
-    (Data. id (Id. reference (inc instance)) new-value)))
+    (Data. id (Id. reference 
+                   {:seq (inc (:seqinstance=)) 
+                    :hash (.hashCode new-value)}) 
+           new-value)))
 
 
 (defprotocol Store

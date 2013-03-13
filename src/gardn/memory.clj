@@ -2,35 +2,43 @@
   (:require [gardn.core :as g])
   (:import gardn.core.Store))
 
-(defn- do-get [entities {:keys [refernce instance]}] 
-  (entities id))
+(defn- instances-map []
+  (sorted-map-by 
+         (fn [{{a :seq} :instance}  {{b :seq} :instance}] (< a b)))
+  )
 
-(defn- do-persist [entities {:keys [id origin] :as entity}] 
-  (cond
-   (nil? origin) (assoc entities id entity)
-   (= (last entities) origin) (assoc entities id entity)
-    :default entities))
+(defn- do-get [entities {:keys [reference instance]}]
+  (if-let [instance-map (entities reference)]
+  (instance-map instance)))
+  
+
+(defn- do-persist [entities {:keys [id origin] :as entity}]
+  (let [{:keys [reference instance]} id]
+    (cond
+     (or (nil? origin) (empty? entities)) (assoc-in entities [reference instance] entity)
+     (= (first (last (entities reference))) (:instance origin)) (assoc-in entities [reference instance] entity)
+    :default entities)))
 
 (deftype MemoryStore [store]
   Store
   (get-entity [_ id]
        (do-get @store id))
   (persist! [_ entity]
-            (= entity ((swap! store do-persist entity)
+            (= entity (do-get (swap! store do-persist entity)
            (:id entity)))))
 
 
+
 (defn new-memory-store []
-  (MemoryStore. (atom (sorted-map-by 
-                       (fn [{a :instance}  {b :instance}] (< a b))))))
+  (MemoryStore. (atom {})))
 
 
-(comment
+
 (def my-memory (new-memory-store))
-(.store my-memory)
+(last (@(.store my-memory) "Nacho"))
 
-(g/update-entity (g/new-entity "Nacho" 1) inc)
+(g/persist! my-memory (g/new-entity "Nacho" 1))
 (g/persist! my-memory (g/update-entity (g/new-entity "Nacho" 1) inc))
 
 (g/get-entity my-memory (:id (g/new-entity "Nacho" 1)))
-  )
+  

@@ -9,7 +9,8 @@
 
 (defn- do-get [entities {:keys [reference instance]}]
   (if-let [instance-map (entities reference)]
-  (instance-map instance)))
+    (cond (= :last instance) (last (last instance-map))
+          :default (instance-map instance))))
   
 
 (defn- do-persist [entities {:keys [id origin] :as entity}]
@@ -41,4 +42,7 @@
 (g/persist! my-memory (g/update-entity (g/new-entity "Nacho" 1) dec))
 
 (g/get-entity my-memory (:id (g/update-entity (g/new-entity "Nacho" 1) inc)))
-  
+(g/persist! my-memory 
+            (g/update-entity (g/get-entity my-memory {:reference "Nacho" :instance :last}) 
+            dec))
+

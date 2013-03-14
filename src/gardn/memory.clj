@@ -29,13 +29,13 @@
            (:id entity)))))
 
 
-
+(comment
 (defn new-memory-store []
   (MemoryStore. (atom {})))
 
 
 
-(def my-memory (new-memory-store))
+ (def my-memory (new-memory-store))
 (.store my-memory)
 
 (g/persist! my-memory (g/new-entity "Nacho" 1))
@@ -44,5 +44,4 @@
 (g/get-entity my-memory (:id (g/update-entity (g/new-entity "Nacho" 1) inc)))
 (g/persist! my-memory 
             (g/update-entity (g/get-entity my-memory {:reference "Nacho" :instance :last}) 
-            dec))
-
+            dec)))

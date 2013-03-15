@@ -22,26 +22,25 @@
 
 (deftype MemoryStore [store]
   Store
-  (get-entity [_ id]
+  (find-entity [_ id]
        (do-get @store id))
   (persist! [_ entity]
             (= entity (do-get (swap! store do-persist entity)
            (:id entity)))))
 
 
-(comment
-(defn new-memory-store []
+(defn memory-store []
   (MemoryStore. (atom {})))
 
-
+(comment
 
  (def my-memory (new-memory-store))
 (.store my-memory)
+(g/persist! my-memory (g/entity "Nacho" 1))
+(g/persist! my-memory (g/next-entity (:id (g/new-entity "Nacho" 1)) 2))
 
-(g/persist! my-memory (g/new-entity "Nacho" 1))
-(g/persist! my-memory (g/update-entity (g/new-entity "Nacho" 1) dec))
-
-(g/get-entity my-memory (:id (g/update-entity (g/new-entity "Nacho" 1) inc)))
+(g/find-entity my-memory (:id (g/next-entity (:id (g/new-entity "Nacho" 1)) inc)))
 (g/persist! my-memory 
-            (g/update-entity (g/get-entity my-memory {:reference "Nacho" :instance :last}) 
-            dec)))
+            (g/next-entity (:id (g/find-entity my-memory {:reference "Nacho" :instance :last})) 
+            5))
+ )

@@ -14,7 +14,7 @@
 (defn entity 
   "Creates a new entity with a given reference and value"
   [reference value]
-  (Data. nil (Id. reference {:seq 0 :hash (.hashCode value)}) value))
+  (Data. nil (Id. reference {:seq-number 0 :hash-code (.hashCode value)}) value))
 
 
 (defn next-entity 
@@ -22,10 +22,11 @@
   [origin value]
   (let [{:keys [reference instance]} origin]
     (Data. origin (Id. reference 
-                   {:seq (inc (:seq instance)) 
-                    :hash (.hashCode value)}) 
+                   {:seq-number (inc (:seq-number instance)) 
+                    :hash-code (.hashCode value)}) 
            value)))
 
+(defn read-entity [tag entity])
 
 (defprotocol Store
   (find-entity [this id]

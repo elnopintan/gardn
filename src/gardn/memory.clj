@@ -35,7 +35,6 @@
 (comment
 
  (def my-memory (new-memory-store))
-(.store my-memory)
 (g/persist! my-memory (g/entity "Nacho" 1))
 (g/persist! my-memory (g/next-entity (:id (g/new-entity "Nacho" 1)) 2))
 

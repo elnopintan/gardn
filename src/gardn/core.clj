@@ -1,4 +1,6 @@
-(ns gardn.core)
+(ns gardn.core
+  (:require [gardn.io :as io]
+            [clojure.edn :as edn]))
 
 ;Gardn Id. 
 ;reference identifies a gardn entity.
@@ -26,7 +28,6 @@
                     :hash-code (.hashCode value)}) 
            value)))
 
-
 (defn find-entity [store id]
   (read-string (find-entity-str store id)))
 
@@ -37,4 +38,5 @@
   (persist! [this entity]
    "Persists a given gardn entity. Returns true if it's persisted and false 
    if there is already an entity with the same origin."))
+
 

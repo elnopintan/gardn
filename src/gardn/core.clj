@@ -26,10 +26,12 @@
                     :hash-code (.hashCode value)}) 
            value)))
 
-(defn read-entity [tag entity])
+
+(defn find-entity [store id]
+  (read-string (find-entity-str store id)))
 
 (defprotocol Store
-  (find-entity [this id]
+  (find-entity-str [this id]
       "Retrieves a given entity by it's Id. 
    If instance is :last retrieva the last entity")
   (persist! [this entity]

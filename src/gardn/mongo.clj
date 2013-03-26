@@ -29,7 +29,6 @@
   (some-> entity
           do-find-entity
           :value 
-          read-string
           ))
 
 (defn can-persist? [{:keys [origin]}]
@@ -54,7 +53,7 @@
 
 (deftype MongoStore [db]
   Store
-  (find-entity [_ id] (return-entity id))
+  (find-entity-str [_ id] (return-entity id))
   (persist! [_ entity] (not (nil? (do-persist! entity)))))
 
 (defn mongo-store [connection-uri]

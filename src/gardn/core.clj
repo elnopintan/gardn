@@ -28,8 +28,26 @@
                     :hash-code (.hashCode value)}) 
            value)))
 
+(defn data-reader [{:keys [reference origin id value]}]
+  (cond value (Data. (if origin (Id. reference origin) nil)
+                (Id. reference id)
+                value)
+        true (Id. reference id)))
+ 
+(defmethod print-method Id [{:keys [reference instance]} w]
+  (.write w "#gardn.core/data")
+  (print-method {:reference reference :id instance} w))
+
+(defmethod print-method Data [{:keys [origin value] 
+                               {:keys [reference instance]} :id} w]
+  (.write w "#gardn.core/data")
+  (print-method {:reference reference 
+                 :id instance
+                 :value value
+                 :origin (if origin (:instance origin) nil)} w))
+
 (defn find-entity [store id]
-  (read-string (find-entity-str store id)))
+  (edn/read-string {:readers {`data data-reader}} (find-entity-str store id) ))
 
 (defprotocol Store
   (find-entity-str [this id]

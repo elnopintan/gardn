@@ -74,10 +74,10 @@
 
 (def myentity (g/entity "number" 1))
 
+
 (g/persist! mystore myentity)
 (:id myentity)
 (g/find-entity mystore {:reference "number" :instance :last})
-
 
 (let [{:keys [id value]} 
       (g/find-entity mystore {:reference "number" :instance :last})]

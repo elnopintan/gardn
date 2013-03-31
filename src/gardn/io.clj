@@ -12,12 +12,12 @@
   [origin id value])
 
 (defmethod print-method Id [{:keys [reference instance]} w]
-  (.write w "#gardn.io/data")
+  (.write w "#gardn.io/data ")
   (print-method {:reference reference :id instance} w))
 
 (defmethod print-method Data [{:keys [origin value] 
                                {:keys [reference instance]} :id} w]
-  (.write w "#gardn.io/data")
+  (.write w "#gardn.io/data ")
   (print-method {:reference reference 
                  :id instance
                  :value value
@@ -28,3 +28,14 @@
                 (Id. reference id)
                 value)
         true (Id. reference id)))
+
+;Gardn data for tagged literals
+(deftype TaggedLiteral 
+  [tag value])
+
+
+(defmethod print-method TaggedLiteral [ d w]
+  (.write w (str "#" (.tag d) " "))
+  (print-method (.value d) w))
+
+(defn tagged-literal-reader [t v] (TaggedLiteral. t v))

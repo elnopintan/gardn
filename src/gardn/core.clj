@@ -27,8 +27,15 @@
    "Persists a given gardn entity. Returns true if it's persisted and false 
    if there is already an entity with the same origin."))
 
-(defn find-entity [store id]
-  (edn/read-string {:readers {`io/data io/data-reader}} (find-entity-str store id) ))
-
+(defn find-entity
+  "Retreives an entity by its Id. 
+  Uses edn reader to deserialize the data. 
+  If provided a readers map will use the given function to read known tagged literals.
+  Any non recognized tagged literal will be given as io/TaggedLiteral type"
+  ([store id] (find-entity store id {}))
+  ([store id readers]
+  (edn/read-string {:readers (merge {`io/data io/data-reader} readers)
+                    :default io/tagged-literal-reader}
+                   (find-entity-str store id) )))
 
 

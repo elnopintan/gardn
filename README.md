@@ -1,6 +1,6 @@
 # gardn
 
-Key value store of EDN data with memory. 
+Key value store of [edn](https://github.com/edn-format/edn) data with memory. 
 
 ## Usage
 
@@ -82,12 +82,13 @@ Gardn ids can be persisted:
   ;                                         :instance {:hash-code 123 :seq-number 0}}}}
   
 ```
-A gardn store can be created with custom tagged literal readers for edn data.
+A gardn store can be created with custom tagged literal readers for [edn](https://github.com/edn-format/edn) data.
 
 ```clojure
  (def my-custom-store (g/store (gm/memory-store) {'example/custom example/custom-reader}))
 ```
 Currently there are two implementations of gardn stores.
+
 A memory store
 
 ```clojure
@@ -100,6 +101,7 @@ A memory store
 A mongodb store
 
 ```clojure
+
   (ns example
   (:require [gardn.core :as g]
     [gardn.mongo :as gmdb]))
@@ -114,8 +116,6 @@ The mongo store can have multiple buckets (mongo collections) using a root mongo
   (def my-mongo-bucket (g/store (gmdb/mongo-bucket-store my-mongo-store "mybucket")))
   
 ```
-
-
 
 ## License
 

@@ -42,8 +42,8 @@ To do so, the id of a previous instance of the same entity must be given.
 ```
 The created entitys can be recorded into a store. But only if:
 
-* Is a new entity and there is no entity stored with the same reference
-* Is the next instance of the last stored entity with the same entity
+* Is a new entity and there is no entity stored with the same reference.
+* Is the next instance of the last stored entity with the same entity.
 
 ```clojure
   
@@ -54,7 +54,7 @@ The created entitys can be recorded into a store. But only if:
  (g/persist! my-store my-entity-2) 
  ; true
 ```
-The entities can be retrieved from the store using its reference and instance id
+The entities can be retrieved from the store using its reference and instance id.
 
 ```clojure
   (g/get-entity my-store {:reference "myref" :instance {:hash-code 123 :seq 0}})
@@ -62,7 +62,7 @@ The entities can be retrieved from the store using its reference and instance id
   ;                 :instance {:hash-code 123 :seq-number 0} :value [1 2 3]}
   
 ```
-The last instance of a reference can be read using :last as instand id
+The last instance of a reference can be read using :last as instand id.
 
 ```clojure
   (g/get-entity my-store {:reference "myref" :instance :last})
@@ -82,7 +82,7 @@ Gardn ids can be persisted:
   ;                                         :instance {:hash-code 123 :seq-number 0}}}}
   
 ```
-A gardn store can be created with custom tagged literal readers for edn data
+A gardn store can be created with custom tagged literal readers for edn data.
 
 ```clojure
  (def my-custom-store (g/store (gm/memory-store) {'example/custom example/custom-reader}))

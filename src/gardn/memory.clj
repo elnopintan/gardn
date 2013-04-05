@@ -39,6 +39,7 @@
            (:id entity)))))
 
 (defn memory-store []
+  "Creates a gardn-store on memory"
   (MemoryStore. (atom {})))
 
 (comment

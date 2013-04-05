@@ -28,15 +28,15 @@
    if there is already an entity with the same origin."))
 
 (defn store 
-  "Creates a store using one implementation"
+  "Creates a store using one implementation
+  If provided a readers map will use the given function to read known tagged literals.
+  Any non recognized tagged literal will be read as io/TaggedLiteral type"
   ([store-impl] (store store-impl {}))
   ([store-impl readers] (with-meta store-impl {:readers readers})))
   
 (defn find-entity
   "Retreives an entity by its Id. 
-  Uses edn reader to deserialize the data. 
-  If provided a readers map will use the given function to read known tagged literals.
-  Any non recognized tagged literal will be given as io/TaggedLiteral type"
+  Uses edn reader to deserialize the data."
   ([store id]
    (let [readers (get (meta store) :readers {})]
     (edn/read-string {:readers (merge {`io/data io/data-reader} readers)

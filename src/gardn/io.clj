@@ -13,19 +13,21 @@
 
 (defmethod print-method Id [{:keys [reference instance]} w]
   (.write w "#gardn.io/data ")
-  (print-method {:reference reference :id instance} w))
+  (print-method {:reference reference :instance instance} w))
 
 (defmethod print-method Data [{:keys [origin value] 
                                {:keys [reference instance]} :id} w]
   (.write w "#gardn.io/data ")
   (print-method {:reference reference 
-                 :id instance
+                 :instance instance
                  :value value
                  :origin (if origin (:instance origin) nil)} w))
 
-(defn data-reader [{:keys [reference origin id value]}]
+(defn data-reader
+  "Reads gardn data literals"
+  [{:keys [reference origin instance value]}]
   (cond value (Data. (if origin (Id. reference origin) nil)
-                (Id. reference id)
+                (Id. reference instance)
                 value)
         true (Id. reference id)))
 

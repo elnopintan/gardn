@@ -1,15 +1,14 @@
 # gardn
 
-Key value store of [edn](https://github.com/edn-format/edn) data with memory. 
-
-## Usage
-
-Gardn is a Key value store that maintains the history of the entities stored.
+Key-value store of [edn](https://github.com/edn-format/edn) data with memory. 
+Gardn is a key-value store that maintains the history of the entities stored.
 An entity can be queried by its reference (a user defined name) o by instance.
 When an entity is updated, its previous state is not deleted. A new one is created. 
 This new value provides a reference to it's last state, that can be queried.
 A Gardn entity can store references to another gardn entities o instances.
-Usage:
+
+## Usage
+
 The first step is to create a Store, using any of the available implementations:
 
 ```clojure

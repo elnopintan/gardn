@@ -44,6 +44,7 @@ The created entitys can be recorded into a store. But only if:
 
 * Is a new entity and there is no entity stored with the same reference
 * Is the next instance of the last stored entity with the same entity
+
 ```clojure
   
  (g/persist! my-store my-entity) 

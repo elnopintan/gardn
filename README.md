@@ -32,6 +32,7 @@ The reference must be a String, and the value can be any edn object.
 When created, a gardn entity receives an id based on its reference, value and sequence number.
 Given an entity a new value can be created with the same reference. 
 To do so, the id of a previous instance of the same entity must be given.
+
 ```clojure
   
   (def my-entity-2 (g/next-entity (:id my-entity) (conj (:value my-entity) 4)))
@@ -45,13 +46,12 @@ The created entitys can be recorded into a store. But only if:
 * Is the next instance of the last stored entity with the same entity
 ```clojure
   
-  (g/persist! my-store my-entity) 
-  ; true
-  (g/persist! my-store my-entity) 
-  ; false
-  (g/persist! my-store my-entity-2) 
-  ; true
-  
+ (g/persist! my-store my-entity) 
+ ; true
+ (g/persist! my-store my-entity) 
+ ; false
+ (g/persist! my-store my-entity-2) 
+ ; true
 ```
 The entities can be retrieved from the store using its reference and instance id
 

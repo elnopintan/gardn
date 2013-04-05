@@ -1,6 +1,7 @@
 # gardn
 
-Key-value store of [edn](https://github.com/edn-format/edn) data with memory. 
+Key-value store of [edn](https://github.com/edn-format/edn) data with memory.
+
 Gardn is a key-value store that maintains the history of the entities stored.
 An entity can be queried by its reference (a user defined name) o by instance.
 When an entity is updated, its previous state is not deleted. A new one is created. 

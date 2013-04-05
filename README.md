@@ -40,7 +40,7 @@ To do so, the id of a previous instance of the same entity must be given.
   ;                 :instance {:hash-code 234 :seq-number 1} :value [1 2 3 4]}
   
 ```
-The created entitys can be recorded into a store. But only if:
+The created entities can be recorded into a store. But only if:
 
 * Is a new entity and there is no entity stored with the same reference.
 * Is the next instance of the last stored entity with the same entity.

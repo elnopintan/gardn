@@ -42,7 +42,7 @@
   (MemoryStore. (atom {})))
 
 (comment
-(def mystore (memory-store))
+(def mystore (g/store (memory-store)))
 
 (def myentity (g/entity "number" 1))
 myentity

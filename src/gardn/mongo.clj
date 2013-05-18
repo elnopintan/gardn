@@ -3,38 +3,40 @@
   (:require [gardn.core :as g]
             [somnium.congomongo :as m]
             [clojure.edn :as edn])
-  (:import [gardn.core Store Data Id]))
+  (:import [gardn.core Store]
+           [gardn.io Data Id]
+           ))
 
-(defn id-query-map [{:keys [reference] 
+(defn id-query-map [{:keys [reference]
                           {:keys [seq-number hash-code]} :instance}]
-  {:reference reference 
+  {:reference reference
    :seq-number seq-number
    :hash-code hash-code})
 
 (defn do-find-entity [{:keys [reference instance] :as id} conn collection]
-  (cond 
+  (cond
    (= instance :last)
-     (m/with-mongo conn 
-       (first (m/fetch  collection 
+     (m/with-mongo conn
+       (first (m/fetch  collection
                      :where {:reference reference}
                      :sort {:seq-number -1})))
    true (let [{:keys [seq-number hash-code]} instance]
-              (m/with-mongo 
+              (m/with-mongo
                  conn  (m/fetch-one
                          collection
                          :where (id-query-map id))))))
 
 
-(defn return-entity [ entity conn collection] 
+(defn return-entity [ entity conn collection]
   (some-> entity
           (do-find-entity conn collection)
-          :value 
+          :value
           ))
 
 (defn can-persist? [{:keys [origin]} conn collection]
   (letfn  [(exist-origin? [id]
-                        (= 
-                         (m/with-mongo 
+                        (=
+                         (m/with-mongo
                           conn (m/fetch-count collection
                                    :where (id-query-map id))) 1))]
     (or (nil? origin)
@@ -60,8 +62,8 @@
   (persist! [_ entity] (not (nil? (do-persist! entity conn collection)))))
 
 (defn- init-store [conn collection]
-    (m/with-mongo 
-     conn 
+    (m/with-mongo
+     conn
      (m/add-index! collection [:reference [:seq-number -1]] :unique true ))
   (MongoStore. conn collection))
 
@@ -72,7 +74,7 @@
 
 (defn mongo-bucket-store [root-store bucket]
   (init-store (.conn root-store) bucket))
-  
+
 
 (comment
 (def mystore (g/store (mongo-store "mongodb://localhost:27017/gardn")))
@@ -84,9 +86,9 @@
 (:id myentity)
 (g/find-entity mystore {:reference "number" :instance :last})
 
-(let [{:keys [id value]} 
+(let [{:keys [id value]}
       (g/find-entity mystore {:reference "number" :instance :last})]
   (g/persist! mystore (g/next-entity id (inc value))))
-  
+
   )
- 
+

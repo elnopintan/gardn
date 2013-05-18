@@ -1,24 +1,24 @@
 (ns gardn.io)
 
-;Gardn Id. 
+;Gardn Id.
 ;reference identifies a gardn entity.
 ;instance refer to a given state of the entity.
-(defrecord Id 
+(defrecord Id
   [reference instance])
 
-;Gardn data. Represent a snapshot of a gardn entity. 
+;Gardn data. Represent a snapshot of a gardn entity.
 ;origin is the Id of the previous state of the entity.
-(defrecord Data 
+(defrecord Data
   [origin id value])
 
 (defmethod print-method Id [{:keys [reference instance]} w]
   (.write w "#gardn.io/data ")
   (print-method {:reference reference :instance instance} w))
 
-(defmethod print-method Data [{:keys [origin value] 
+(defmethod print-method Data [{:keys [origin value]
                                {:keys [reference instance]} :id} w]
   (.write w "#gardn.io/data ")
-  (print-method {:reference reference 
+  (print-method {:reference reference
                  :instance instance
                  :value value
                  :origin (if origin (:instance origin) nil)} w))
@@ -29,10 +29,10 @@
   (cond value (Data. (if origin (Id. reference origin) nil)
                 (Id. reference instance)
                 value)
-        true (Id. reference id)))
+        true (Id. reference instance)))
 
 ;Gardn data for tagged literals
-(deftype TaggedLiteral 
+(deftype TaggedLiteral
   [tag value])
 
 
